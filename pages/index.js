@@ -1,10 +1,9 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Countdown from 'react-countdown';
-import { ArrowsExpandIcon } from '@heroicons/react/outline'
 
 export default function Home({ launches }) {
-  const launchCards = launches.result.map((launch) => <LaunchCard launch={launch}/>);
+  const launchCards = launches.result.map((launch, i) => <LaunchCard key={i} launch={launch}/>);
 
   return (
     <div className='w-full h-full bg-slate-900'>
