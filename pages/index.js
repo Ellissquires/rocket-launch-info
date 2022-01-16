@@ -41,7 +41,6 @@ function LaunchCountdowns ({ launches }) {
 }
 
 function LaunchMainDetailCard ({ launch }) {
-  console.log(launch);
   return (
     <div className="w-full lg:w-1/3 p-2 text-sky-400">
       <div className="relative h-full bg-slate-700 ring-1 ring-gray-400 rounded-md p-4">
@@ -62,7 +61,7 @@ function LaunchConditionsCard ({ launch }) {
       <div className="relative h-full bg-slate-700 ring-1 ring-gray-400 rounded-md p-4">
         <SubSectionHeadingLabel heading="Conditions"/>
         <div className="flex">
-          
+
         </div>
       </div>
     </div>
