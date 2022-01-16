@@ -26,6 +26,7 @@ function LaunchDetails ({ launch }) {
       <MainSectionHeadingLabel heading="Next Launch"/>
       <LaunchMainDetailCard launch={launch}/>
       <LaunchConditionsCard launch={launch}/>
+      <LaunchConditionsCard launch={launch}/>
     </div>
   )
 }
