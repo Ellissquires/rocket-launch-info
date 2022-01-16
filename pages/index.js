@@ -3,8 +3,7 @@ import styles from '../styles/Home.module.css'
 import Countdown from 'react-countdown';
 
 export default function Home({ launches }) {
-  const launchCards = launches.result.map((launch, i) => <LaunchCard key={i} launch={launch}/>);
-
+  let selectedLaunch = launches.result[0];
   return (
     <div className='w-full h-full bg-slate-900'>
       <Head>
@@ -14,38 +13,101 @@ export default function Home({ launches }) {
       </Head>
 
       <main className={styles.main}>
-        <div className='w-2/3 p-6 bg-gray-200 rounded-md mb-10 ring-2'>
-          <span className='text-blue-400 text-3xl'></span>
-        </div>
-        <div className='flex w-3/4 p-6 bg-gray-200 rounded-md flex-wrap justify-center'>
-          { launchCards }
-        </div>
+        <LaunchDetails launch={selectedLaunch}/>
+        <LaunchCountdowns launches={launches}/>
       </main>
     </div>
   )
 }
 
-function LaunchCard( { launch } ) {
+function LaunchDetails ({ launch }) {
+  return (
+    <div className='relative flex flex-wrap w-3/4 p-6 rounded-md mb-10 ring-1 ring-gray-700'>
+      <MainSectionHeadingLabel heading="Next Launch"/>
+      <LaunchMainDetailCard launch={launch}/>
+      <LaunchConditionsCard launch={launch}/>
+    </div>
+  )
+}
+
+function LaunchCountdowns ({ launches }) {
+  const launchCards = launches.result.map((launch, i) => <LaunchCountdownCard key={i} launch={launch}/>);
+  return (
+    <div className="relative flex w-3/4 p-6 rounded-md flex-wrap justify-center ring-1 ring-gray-700">
+      <MainSectionHeadingLabel heading="Launch Countdowns"/>
+      { launchCards }
+    </div>
+  )
+}
+
+function LaunchMainDetailCard ({ launch }) {
+  console.log(launch);
+  return (
+    <div className="w-full lg:w-1/3 p-2 text-sky-400">
+      <div className="relative h-full bg-slate-700 ring-1 ring-gray-400 rounded-md p-4">
+        <SubSectionHeadingLabel heading="Details"/>
+        <div><span className="underline underline-offset-2 text-pink-500">Provider</span> <br/> { launch.provider.name}</div>
+        <div><span className="underline underline-offset-2 text-pink-500">Vehicle</span> <br/> { launch.vehicle.name}</div>
+        <div><span className="underline underline-offset-2 text-pink-500">Location</span> <br/> { launch.pad.location.name}</div>
+        <div><span className="underline underline-offset-2 text-pink-500">Description</span> <br/> { launch.launch_description}</div>
+      </div>
+    </div>
+
+  )
+}
+
+function LaunchConditionsCard ({ launch }) {
+  return (
+    <div className="w-full lg:w-1/3 p-2 text-sky-400">
+      <div className="relative h-full bg-slate-700 ring-1 ring-gray-400 rounded-md p-4">
+        <SubSectionHeadingLabel heading="Conditions"/>
+        <div className="flex">
+          
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LaunchCountdownCard( { launch } ) {
   const launchDate = new Date(launch.sort_date * 1000);
-  const hoursTillLaunch = Math.abs(launchDate - new Date()) / 36e5;
-  const launchSoon = hoursTillLaunch <= 100;
+  let inLaunchWindow = false;
+
+  if (launch.win_open) {
+    const now = new Date();
+    const windowOpenDate = new Date(launch.win_open);
+    inLaunchWindow = now > windowOpenDate;
+  }
 
   return (
-    <div className='w-full h-32 p-2 drop-shadow-md md:w-1/2 lg:w-1/3'>
-      <div className='relative w-full h-full bg-sky-50 rounded-md p-4 ring-2 flex justify-center items-center'>
-        <span className='absolute top-0 left-0 p-2 w-full -mt-4 flex justify-center items-center'>
-          <span className="w-32 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-blue-100 bg-blue-500 rounded-full">{ launch.vehicle.name } </span>
-        </span>
-
-        { launchSoon && 
+    <div className='w-full h-32 p-2 md:w-1/2 lg:w-1/3'>
+      <div className='relative w-full h-full bg-slate-700 rounded-md p-4 flex justify-center items-center ring-1 ring-gray-400'>
+        <SubSectionHeadingLabel heading={launch.vehicle.name}/>
+        { inLaunchWindow && 
           <div>
             <div className="absolute top-0 right-0 -mr-2 -mt-2 w-5 h-5 rounded-full bg-green-500 animate-ping"></div>
             <div className="absolute top-0 right-0 -mr-2 -mt-2 w-5 h-5 rounded-full bg-green-500"></div>
           </div>
         }
-        <Countdown className="text-2xl select-none text-blue-400 font-bold tracking-wide" date={launchDate}></Countdown>
+        <Countdown className="text-2xl text-sky-400 font-bold tracking-wide select-none" date={launchDate}></Countdown>
       </div>
     </div>
+  )
+}
+
+function SubSectionHeadingLabel ({ heading }) {
+  return (
+    <span className='absolute top-0 left-0 p-2 w-full -mt-4 flex justify-center items-center select-none'>
+      <span className="w-32 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-sky-400 bg-slate-900 rounded-full ring-2 ring-gray-700">{ heading } </span>
+    </span>
+  )
+}
+
+function MainSectionHeadingLabel ({ heading }) {
+  return (
+    <span className='absolute top-0 left-0 p-2 w-full -mt-6 flex justify-center items-center select-none'>
+      <span className="w-64 inline-flex items-center justify-center px-2 py-2 bg-slate-900 text-md text-bold leading-none text-sky-400 rounded-full ring-1 ring-gray-700">{ heading }</span>
+    </span>
   )
 }
 
