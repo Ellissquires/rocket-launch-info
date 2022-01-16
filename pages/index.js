@@ -22,7 +22,7 @@ export default function Home({ launches }) {
 
 function LaunchDetails ({ launch }) {
   return (
-    <div className='relative flex flex-wrap w-3/4 p-6 rounded-md mb-10 ring-1 ring-gray-700'>
+    <div className='relative flex flex-wrap w-100 ml-4 mr-4 sm:w-3/4 p-6 rounded-md mb-10 ring-1 ring-gray-700'>
       <MainSectionHeadingLabel heading="Next Launch"/>
       <LaunchMainDetailCard launch={launch}/>
       <LaunchConditionsCard launch={launch}/>
@@ -33,7 +33,7 @@ function LaunchDetails ({ launch }) {
 function LaunchCountdowns ({ launches }) {
   const launchCards = launches.result.map((launch, i) => <LaunchCountdownCard key={i} launch={launch}/>);
   return (
-    <div className="relative flex w-3/4 p-6 rounded-md flex-wrap justify-center ring-1 ring-gray-700">
+    <div className="relative flex w-100 ml-4 mr-4 sm:w-3/4 p-6 rounded-md flex-wrap justify-center ring-1 ring-gray-700">
       <MainSectionHeadingLabel heading="Launch Countdowns"/>
       { launchCards }
     </div>
